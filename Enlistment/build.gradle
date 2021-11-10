@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group 'com.group24h'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    implementation("org.apache.commons:commons-lang3:3.12.0")
+
+    // Use JUnit test framework
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+    }
+}

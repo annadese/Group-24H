@@ -1,7 +1,7 @@
 package com.group24h.enlistment;
 
 import java.util.*;
-import static org.apache.commons.lang3.StringUtils.*;
+
 import static org.apache.commons.lang3.Validate.*;
 
 class Student {
@@ -26,7 +26,16 @@ class Student {
     void enlist(Section newSection) {
         notNull(newSection, "section cannot be null");
         sections.forEach(currSection -> currSection.checkForConflict(newSection));
+        newSection.checkCapacity();
+        newSection.addEnlistedStudent();
         sections.add(newSection);
+    }
+
+    void cancelEnlistment(Section section) {
+        notNull(section, "section cannot be null");
+        isTrue(sections.contains(section), "student is not enlisted in section");
+        section.removeEnlistedStudent();
+        sections.remove(section);
     }
 
     Collection<Section> getSections() {

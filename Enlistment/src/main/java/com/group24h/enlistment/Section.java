@@ -7,20 +7,19 @@ import static org.apache.commons.lang3.Validate.*;
 
 class Section {
     private final String sectionId;
-     private final Schedule schedule;
+    private final Schedule schedule;
+    private final Room room;
+    private int enlistedStudents;
 
-    Section(String sectionId, Schedule schedule) {
+    Section(String sectionId, Schedule schedule, Room room) {
         notBlank(sectionId, "sectionId cannot be null, empty or whitespace");
-
         isTrue(isAlphanumeric(sectionId),
-                "sectionId must be alphanumberic, was: " + sectionId);
+                "sectionId must be alphanumeric, was: " + sectionId);
 
-        if (!isAlphanumeric(sectionId)) {
-            throw new IllegalArgumentException(
-                    "sectionId must be alphanumberic, was: " + sectionId);
-        }
         this.sectionId = sectionId;
         this.schedule = schedule;
+        this.room = room;
+        this.enlistedStudents = 0;
     }
 
     void checkForConflict(Section other) {
@@ -29,6 +28,18 @@ class Section {
                     this + " and new section " + other + " " +
                     "at schedule " + this.schedule);
         }
+    }
+
+    void checkCapacity() {
+        isTrue(enlistedStudents < room.getCapacity(),"capacity limit reached for sectionId " + this.sectionId);
+    }
+
+    void addEnlistedStudent() {
+        this.enlistedStudents += 1;
+    }
+
+    void removeEnlistedStudent() {
+        this.enlistedStudents -= 1;
     }
 
     @Override

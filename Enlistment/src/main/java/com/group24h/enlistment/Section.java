@@ -1,5 +1,6 @@
 package com.group24h.enlistment;
 
+import java.util.Collection;
 import java.util.Objects;
 
 import static org.apache.commons.lang3.StringUtils.*;
@@ -10,8 +11,9 @@ class Section {
     private final Schedule schedule;
     private final Room room;
     private int enlistedStudents;
+    private final Subject subject;
 
-    Section(String sectionId, Schedule schedule, Room room) {
+    Section(String sectionId, Schedule schedule, Room room, Subject subject) {
         notBlank(sectionId, "sectionId cannot be null, empty or whitespace");
         isTrue(isAlphanumeric(sectionId),
                 "sectionId must be alphanumeric, was: " + sectionId);
@@ -20,6 +22,7 @@ class Section {
         this.schedule = schedule;
         this.room = room;
         this.enlistedStudents = 0;
+        this.subject = subject;
     }
 
     void checkForConflict(Section other) {
@@ -28,6 +31,11 @@ class Section {
                     this + " and new section " + other + " " +
                     "at schedule " + this.schedule);
         }
+        /*if (this.subject.equals(other.subject)) {
+            throw new SubjectConflictException("duplicate subjects between current section " +
+                    this.subject + " and new section " + other + " " +
+                    "at subject " + other.subject);
+        }*/
     }
 
     void checkCapacity() {
@@ -40,6 +48,10 @@ class Section {
 
     void removeEnlistedStudent() {
         this.enlistedStudents -= 1;
+    }
+
+    public Subject getSubject() {
+        return subject;
     }
 
     @Override

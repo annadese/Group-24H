@@ -12,8 +12,8 @@ class StudentTest {
     void enlist_two_section_no_conflict() {
         // Given a student & two sections
         Student student = new Student(1);
-        Section sec1 = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30));
-        Section sec2 = new Section("B", new Schedule(Days.TF, Period.H1000), new Room("G303", 30));
+        Section sec1 = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30), new Subject("STSWENG", Collections.EMPTY_SET));
+        Section sec2 = new Section("B", new Schedule(Days.TF, Period.H1000), new Room("G303", 30), new Subject("STSWENG", Collections.EMPTY_SET));
 
         // When the student enlists in both sections
         student.enlist(sec1);
@@ -31,8 +31,8 @@ class StudentTest {
     void enlist_two_sections_same_schedule() {
         // Given a student & two sections w/ same schedule
         Student student = new Student(1);
-        Section sec1 = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30));
-        Section sec2 = new Section("B", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30));
+        Section sec1 = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30), new Subject("STSWENG", Collections.EMPTY_SET));
+        Section sec2 = new Section("B", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30), new Subject("STSWENG", Collections.EMPTY_SET));
 
         // When the student enlists in both sections
         student.enlist(sec1);
@@ -45,7 +45,7 @@ class StudentTest {
     void enlist_open_section() {
         // Given a student and an open section
         Student student = new Student(1);
-        Section sec = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30));
+        Section sec = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30), new Subject("STSWENG", Collections.EMPTY_SET));
 
         // When the student enlists in the section
         student.enlist(sec);
@@ -63,7 +63,7 @@ class StudentTest {
         // Given two students and a section w/ room capacity of 1
         Student student1 = new Student(1);
         Student student2 = new Student(2);
-        Section sec = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 1));
+        Section sec = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 1), new Subject("STSWENG", Collections.EMPTY_SET));
 
         // When the two students enlist in the same section
         student1.enlist(sec);
@@ -76,7 +76,7 @@ class StudentTest {
     void cancel_enlisted_section() {
         // Given a student enlisted in a section
         Student student = new Student(1);
-        Section sec = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30));
+        Section sec = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30), new Subject("STSWENG", Collections.EMPTY_SET));
         student.enlist(sec);
 
         // When the student cancels an enlisted section
@@ -94,10 +94,27 @@ class StudentTest {
     void cancel_not_enlisted_section() {
         // Given a student and a section
         Student student = new Student(1);
-        Section sec = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30));
+        Section sec = new Section("A", new Schedule(Days.MTH, Period.H0830), new Room("G303", 30), new Subject("STSWENG", Collections.EMPTY_SET));
 
         // When the student cancels their enlistment in a section they are not enlisted in
         // Then an exception should be thrown on the student's cancellation
         assertThrows(RuntimeException.class, () -> student.cancelEnlistment(sec));
     }
+
+    @Test
+    void enlist_students_at_capacity_in_two_sections_sharing_the_same_room() {
+        // Given 2 sections that share same room w/ capacity 1, and 2 students
+        final int CAPACITY = 1;
+        Room room = new Room("X", CAPACITY);
+        Section sec1 = new Section("A", new Schedule(Days.MTH, Period.H0830), room, new Subject("STSWENG", Collections.EMPTY_SET));
+        Section sec2 = new Section("B", new Schedule(Days.TF, Period.H0830), room, new Subject("STSWENG", Collections.EMPTY_SET));
+        Student student1 = new Student(1);
+        Student student2 = new Student(2);
+        // When each student enlists in a different section
+        student1.enlist(sec1);
+        student2.enlist(sec2);
+        // No exception should be thrown
+    }
+
+
 }

@@ -31,10 +31,6 @@ class Room {
         return roomName;
     }
 
-//    int getCapacity() {
-//        return capacity;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

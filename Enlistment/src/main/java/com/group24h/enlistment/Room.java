@@ -15,14 +15,25 @@ class Room {
         notNull(capacity);
         isTrue(isAlphanumeric(roomName),
                 "roomName must be alphanumeric, was: " + roomName);
-
+        isTrue(capacity > 0, "capacity must be greater than zero, was: " + capacity);
         this.roomName = roomName;
         this.capacity = capacity;
     }
 
-    int getCapacity() {
-        return capacity;
+    void checkIfAtOrOverCapacity(int occupancy) {
+        if (occupancy >= capacity) {
+            throw new CapacityException("at or over capacity of " + capacity + "  at occupancy of " + occupancy);
+        }
     }
+
+    @Override
+    public String toString() {
+        return roomName;
+    }
+
+//    int getCapacity() {
+//        return capacity;
+//    }
 
     @Override
     public boolean equals(Object o) {

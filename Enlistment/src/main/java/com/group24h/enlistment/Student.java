@@ -30,10 +30,13 @@ class Student {
         notNull(newSection, "section cannot be null");
         sections.forEach(currSection -> currSection.checkForConflict(newSection));
         newSection.getSubject().checkPrerequisites(completedSubjects);
-        newSection.checkCapacity();
-        newSection.addEnlistedStudent();
-        sections.add(newSection);
-
+        newSection.lock();
+        try {
+            newSection.addEnlistedStudent();
+            sections.add(newSection);
+        } finally {
+            newSection.unlock();
+        }
     }
 
     void cancelEnlistment(Section section) {

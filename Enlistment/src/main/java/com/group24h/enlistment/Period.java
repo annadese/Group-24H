@@ -1,6 +1,7 @@
 package com.group24h.enlistment;
 
 import java.time.LocalTime;
+import java.util.Objects;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -58,4 +59,16 @@ public class Period {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Period period = (Period) o;
+        return Objects.equals(start, period.start) && Objects.equals(end, period.end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end);
+    }
 }
